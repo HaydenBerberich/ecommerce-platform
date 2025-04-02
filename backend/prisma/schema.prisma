@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String? // Optional name
+  password  String   // We store the hash here
+  isAdmin   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Optional: Add relation to orders later
+  // orders    Order[]
+
+  @@map("users") // Maps model 'User' to table 'users' in the database
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products    Product[] // Relation: One Category has many Products
+
+  @@map("categories")
+}
+
+model Product {
+  id            Int      @id @default(autoincrement())
+  name          String
+  description   String
+  price         Decimal  // Use Decimal for currency precision
+  stockQuantity Int
+  imageUrls     String[] // Array of strings for image URLs
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  categoryId    Int // Foreign key field
+  category      Category @relation(fields: [categoryId], references: [id]) // Defines the relation
+
+  // Optional: Add relation to orderItems later
+  // orderItems  OrderItem[]
+
+  @@map("products")
+}
