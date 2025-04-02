@@ -17,7 +17,7 @@ The project is structured as a monorepo containing separate `frontend` and `back
         *   Business logic handled in controllers (`src/controllers/`).
         *   Database interactions performed using `Prisma Client` (`src/lib/prisma.ts`).
         *   Endpoints available under `/api/products` and `/api/categories`.
-        *   Basic error handling included.
+        *   Basic error handling and validation included.
     *   Development server (`npm run dev`) using `ts-node-dev` is functional.
     *   Build script (`npm run build`) compiles TypeScript to JavaScript.
     *   Start script (`npm run start`) runs the compiled application.
@@ -28,14 +28,14 @@ The project is structured as a monorepo containing separate `frontend` and `back
 
 The following API endpoints are available (no authentication required yet):
 
-**Categories:** `/api/categories`
+**Categories:** Base URL `/api/categories`
 *   `GET /`: Get all categories.
 *   `POST /`: Create a new category. Requires JSON body: `{ "name": "string", "description": "string?" }`
 *   `GET /:id`: Get a single category by its ID.
 *   `PUT /:id`: Update a category by its ID. Requires JSON body: `{ "name": "string", "description": "string?" }`
 *   `DELETE /:id`: Delete a category by its ID.
 
-**Products:** `/api/products`
+**Products:** Base URL `/api/products`
 *   `GET /`: Get all products (includes category data).
 *   `POST /`: Create a new product. Requires JSON body: `{ "name": "string", "description": "string", "price": number, "stockQuantity": number, "imageUrls": ["string"]?, "categoryId": number }`
 *   `GET /:id`: Get a single product by its ID (includes category data).
@@ -151,8 +151,9 @@ ecommerce_platform/
 │   ├── .env        # Local environment variables (ignored by git)
 │   ├── .env.example # Example environment variables
 │   ├── package.json
+│   ├── package-lock.json
 │   ├── tsconfig.json
-│   └── ...
+│   └── dist/        # Compiled JS output (ignored by git)
 └── frontend/       # Placeholder for React Frontend (Not yet implemented)
     └── ...
 ```
@@ -168,9 +169,14 @@ ecommerce_platform/
 
 ## Next Steps
 
-*   Implement User Authentication (Backend: registration, login with JWT).
-*   Set up the React frontend project (Vite, TypeScript, Tailwind CSS, React Router).
-*   Connect Frontend to Backend for displaying Products/Categories.
-*   Add Input Validation and more robust Error Handling to APIs.
-*   Implement Shopping Cart functionality (Backend & Frontend).
-*   ... and more features!
+*   Implement User Authentication (Backend): Registration, password hashing (bcrypt), login, JWT generation and validation, route protection middleware.
+*   Set up the React frontend project: Initialize using Vite, install TypeScript, Tailwind CSS, React Router, state management (Redux Toolkit/Zustand), data fetching library (React Query).
+*   Connect Frontend to Backend: Fetch and display Products & Categories.
+*   Implement Frontend Authentication: Login/Register forms, storing JWT, protecting routes, managing auth state.
+*   Implement Shopping Cart functionality: Backend APIs and Frontend UI/state management.
+*   Implement Checkout Process: Backend APIs (order creation) and Frontend UI flow.
+*   Add more robust Input Validation and Error Handling.
+*   Implement Testing (Unit, Integration, E2E).
+*   Containerize using Docker.
+*   Deploy to a cloud platform (AWS/GCP/Azure).
+*   Set up CI/CD Pipeline.
