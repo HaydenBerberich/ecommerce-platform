@@ -4,27 +4,52 @@ This is a project to build a full-stack e-commerce web application, intended as 
 
 The project is structured as a monorepo containing separate `frontend` and `backend` applications.
 
-## Current Status (As of Phase 1, Step 2 Completion)
+## Current Status (As of Phase 1, Step 3 Completion)
 
 *   **Backend:**
     *   Node.js project initialized using Express.js and TypeScript.
     *   PostgreSQL database connection established using Prisma ORM.
-    *   Initial data models defined (`User`, `Product`, `Category`) in `prisma/schema.prisma`.
+    *   Data models defined (`User`, `Product`, `Category`) in `prisma/schema.prisma`.
     *   Database tables created via `prisma migrate dev`.
-    *   Basic Express server setup (`src/server.ts`) with a root (`/`) health check route.
+    *   Basic Express server setup (`src/server.ts`) with JSON parsing middleware.
+    *   **Implemented CRUD (Create, Read, Update, Delete) API endpoints for Products and Categories.**
+        *   Routes organized using `Express Router` (`src/routes/`).
+        *   Business logic handled in controllers (`src/controllers/`).
+        *   Database interactions performed using `Prisma Client` (`src/lib/prisma.ts`).
+        *   Endpoints available under `/api/products` and `/api/categories`.
+        *   Basic error handling included.
     *   Development server (`npm run dev`) using `ts-node-dev` is functional.
     *   Build script (`npm run build`) compiles TypeScript to JavaScript.
     *   Start script (`npm run start`) runs the compiled application.
 *   **Frontend:**
     *   Placeholder directory exists, but the frontend application has **not** been set up yet.
 
+## API Endpoints (Backend - Current)
+
+The following API endpoints are available (no authentication required yet):
+
+**Categories:** `/api/categories`
+*   `GET /`: Get all categories.
+*   `POST /`: Create a new category. Requires JSON body: `{ "name": "string", "description": "string?" }`
+*   `GET /:id`: Get a single category by its ID.
+*   `PUT /:id`: Update a category by its ID. Requires JSON body: `{ "name": "string", "description": "string?" }`
+*   `DELETE /:id`: Delete a category by its ID.
+
+**Products:** `/api/products`
+*   `GET /`: Get all products (includes category data).
+*   `POST /`: Create a new product. Requires JSON body: `{ "name": "string", "description": "string", "price": number, "stockQuantity": number, "imageUrls": ["string"]?, "categoryId": number }`
+*   `GET /:id`: Get a single product by its ID (includes category data).
+*   `PUT /:id`: Update a product by its ID. Requires JSON body with fields to update (e.g., `{ "price": number, "stockQuantity": number }`).
+*   `DELETE /:id`: Delete a product by its ID.
+
 ## Tech Stack (Backend - Current)
 
 *   **Runtime:** Node.js (v18.x or later recommended)
 *   **Framework:** Express.js
+*   **Routing:** Express Router
 *   **Language:** TypeScript
 *   **Database:** PostgreSQL
-*   **ORM:** Prisma
+*   **ORM:** Prisma (with Prisma Client)
 *   **Package Manager:** npm
 *   **Version Control:** Git
 
@@ -35,6 +60,7 @@ Before you begin, ensure you have the following installed:
 *   [Git](https://git-scm.com/)
 *   [Node.js](https://nodejs.org/) (v18.x or later) & npm (comes with Node.js)
 *   [Docker](https://www.docker.com/products/docker-desktop/) **OR** a local installation of [PostgreSQL](https://www.postgresql.org/download/)
+*   An API testing tool like [Postman](https://www.postman.com/) or [Insomnia](https://insomnia.rest/) (for testing backend endpoints)
 
 ## Getting Started (Backend Only - Current State)
 
@@ -100,23 +126,36 @@ These instructions cover setting up and running the **backend** development envi
     npm run dev
     ```
 
-8.  The backend server should now be running (typically on `http://localhost:3001` - check console output). You can access the basic test route at `http://localhost:3001/` in your browser or using a tool like Postman/Insomnia to verify it's working.
+8.  The backend server should now be running (typically on `http://localhost:3001` - check console output). You can now use Postman/Insomnia to interact with the API endpoints listed under the "API Endpoints" section (e.g., `POST` to `/api/categories` to create a category, `GET` to `/api/products` to list products).
 
 ## Project Structure Overview
-ecommerce-platform/
-├── .git/
-├── .gitignore # Root gitignore
-├── backend/ # Node.js/Express/Prisma Backend
-│ ├── prisma/ # Prisma schema, migrations
-│ ├── src/ # TypeScript source code
-│ ├── .env # Local environment variables (ignored by git)
-│ ├── .env.example # Example environment variables
-│ ├── package.json
-│ ├── tsconfig.json
-│ └── ...
-└── frontend/ # Placeholder for React Frontend (Not yet implemented)
-└── ...
 
+```text
+ecommerce_platform/
+├── .git/
+├── .gitignore      # Root gitignore
+├── backend/        # Node.js/Express/Prisma Backend
+│   ├── prisma/     # Prisma schema, migrations
+│   │   ├── schema.prisma
+│   │   └── migrations/
+│   ├── src/        # TypeScript source code
+│   │   ├── controllers/ # Request handling logic
+│   │   │   ├── category.controller.ts
+│   │   │   └── product.controller.ts
+│   │   ├── lib/        # Shared libraries/utilities
+│   │   │   └── prisma.ts # Prisma Client instance
+│   │   ├── routes/     # API route definitions
+│   │   │   ├── category.routes.ts
+│   │   │   └── product.routes.ts
+│   │   └── server.ts   # Express server setup and entry point
+│   ├── .env        # Local environment variables (ignored by git)
+│   ├── .env.example # Example environment variables
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── ...
+└── frontend/       # Placeholder for React Frontend (Not yet implemented)
+    └── ...
+```
 
 ## Available Scripts (Backend - inside `backend` directory)
 
@@ -129,7 +168,9 @@ ecommerce-platform/
 
 ## Next Steps
 
-*   Implement CRUD API endpoints for Products and Categories in the backend.
-*   Set up the React frontend project.
-*   Implement User Authentication (Backend & Frontend).
+*   Implement User Authentication (Backend: registration, login with JWT).
+*   Set up the React frontend project (Vite, TypeScript, Tailwind CSS, React Router).
+*   Connect Frontend to Backend for displaying Products/Categories.
+*   Add Input Validation and more robust Error Handling to APIs.
+*   Implement Shopping Cart functionality (Backend & Frontend).
 *   ... and more features!
