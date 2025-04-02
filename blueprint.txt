@@ -1,0 +1,109 @@
+Phase 1: Backend Foundation & Core APIs
+
+    Project Setup & Environment:
+        Action: Initialize your Node.js backend project. Set up TypeScript configuration. Install basic dependencies. Set up your Git repository.
+        Tools:
+            Runtime: Node.js
+            Package Manager: npm or yarn
+            Language: TypeScript (tsc, tsconfig.json)
+            Development Server: ts-node-dev or nodemon
+            Backend Framework: Express.js (or NestJS if you prefer a more structured framework - use NestJS CLI)
+            Version Control: Git, GitHub / GitLab
+
+    Database & ORM Setup:
+        Action: Choose and set up your database. Initialize your ORM and define initial schemas (User, Product, Category). Create initial database migrations.
+        Tools:
+            Database: PostgreSQL (Install locally or run via Docker)
+            ORM: Prisma (Highly recommended: prisma init, schema.prisma, prisma migrate dev, Prisma Client)
+
+    Product & Category APIs (CRUD - No Auth yet):
+        Action: Implement API endpoints (using Express Router or NestJS Controllers/Services) for Creating, Reading, Updating, and Deleting Products and Categories. Focus on interacting with the database via Prisma. Test these endpoints.
+        Tools:
+            Framework: Express Router / NestJS Modules/Controllers/Services
+            ORM Client: Prisma Client
+            API Testing Tool: Postman or Insomnia (for manual testing during development)
+
+    User Authentication (Backend):
+        Action: Update the User schema (password hash). Implement API endpoints for user registration (hash password) and login (verify password, issue JWT). Implement middleware (Express) or Guards (NestJS) to protect specific routes.
+        Tools:
+            Password Hashing: bcrypt
+            Authentication Strategy: JSON Web Tokens (JWT) (library: jsonwebtoken)
+            Middleware/Guards: Express Middleware / NestJS Guards (potentially Passport.js library for strategy management, though JWT is simple enough to implement directly).
+
+Phase 2: Frontend Basics & Connection
+
+    Frontend Project Setup:
+        Action: Initialize your React frontend project using Vite. Set up TypeScript. Install core libraries. Set up basic folder structure.
+        Tools:
+            Build Tool: Vite
+            Framework/Library: React
+            Language: TypeScript
+            Package Manager: npm or yarn
+            Routing: React Router
+            Styling: Tailwind CSS (Recommended for utility-first approach) or CSS Modules/Styled-Components.
+
+    Display Products & Categories:
+        Action: Create components for displaying lists of products (Product List Page) and single product details (Product Detail Page). Fetch data from your backend API endpoints (created in Step 3). Set up basic navigation.
+        Tools:
+            HTTP Client: Axios or native fetch
+            Server State Management: React Query (TanStack Query) (Highly recommended for caching, refetching, loading/error states)
+            React Components & JSX
+
+    Frontend Authentication:
+        Action: Create Login and Registration page components/forms. Implement logic to call the backend auth endpoints (Step 4). Store the JWT securely upon login (e.g., localStorage or sessionStorage - consider security implications). Configure Axios/fetch to send the token with subsequent requests. Protect frontend routes that require login. Set up global state for authentication status.
+        Tools:
+            Global State Management: Redux Toolkit or Zustand
+            Form Handling: React Hook Form (Optional but helpful)
+            Axios Interceptors (for automatically attaching JWT to requests)
+            React Router (for route protection)
+
+Phase 3: Core E-commerce Functionality
+
+    Shopping Cart (Backend & Frontend):
+        Action (Backend): Design cart storage (database table or potentially Redis later). Create API endpoints to add item, view cart, update quantity, remove item. Associate cart with logged-in user.
+        Action (Frontend): Add "Add to Cart" functionality to product pages. Create a Cart component/page to display items, quantities, and total. Connect cart actions to backend API. Update global state (cart contents).
+        Tools: Express/NestJS, Prisma, React, Redux Toolkit/Zustand, React Query/Axios.
+
+    Checkout Process & Order Creation (Backend & Frontend - Simulated Payment):
+        Action (Backend): Define Order and OrderItem schemas in Prisma and migrate. Create API endpoint to place an order: takes cart data, user ID, shipping info; creates Order/OrderItem records in DB; clears the user's cart. Initially, skip real payment processing.
+        Action (Frontend): Create a multi-step checkout UI (shipping address, payment method placeholder, order review). On confirmation, call the backend endpoint to create the order. Redirect to an order confirmation page or user's order history.
+        Tools: Prisma, Express/NestJS, React, React Router, State Management.
+
+    User Profile & Order History:
+        Action (Backend): Create API endpoints for users to fetch their own profile information and their order history (including order items).
+        Action (Frontend): Create a User Profile page allowing users to view/update basic info and see a list of their past orders.
+        Tools: Express/NestJS, Prisma, React, React Query/Axios.
+
+Phase 4: Admin & Refinements
+
+    Admin Panel (Backend & Frontend):
+        Action (Backend): Implement authorization middleware/guards ensuring only admin users can access specific endpoints. Create CRUD API endpoints for managing Products, Categories, viewing Orders (and updating status), and viewing Users.
+        Action (Frontend): Create a separate section/route group for admin users. Build UI tables and forms for managing products, categories, orders, and users, calling the admin API endpoints.
+        Tools: Express/NestJS (Auth Middleware/Guards), React (potentially UI libraries like MUI or Ant Design for admin tables/forms).
+
+    Testing:
+        Action: Write unit and integration tests for critical backend logic (services, utilities) and API endpoints. Write unit/integration tests for key frontend components and hooks. Write E2E tests for major user flows (login, add to cart, checkout).
+        Tools:
+            Backend Testing: Jest, Supertest (for API endpoint testing)
+            Frontend Testing: Jest, React Testing Library
+            End-to-End Testing: Cypress or Playwright
+
+Phase 5: Deployment & Beyond
+
+    Containerization:
+        Action: Create Dockerfiles for both the frontend (multi-stage build recommended for smaller image) and backend services. Create a docker-compose.yml file to easily run the entire stack (frontend, backend, database) locally.
+        Tools: Docker, Docker Compose
+
+    Deployment:
+        Action: Choose a cloud provider. Provision necessary resources (managed database, container hosting service, object storage for images). Configure environment variables securely. Build Docker images and deploy them. Configure networking (DNS, Load Balancer if needed).
+        Tools:
+            Cloud Provider: AWS (e.g., RDS for PostgreSQL, ECS/Fargate or EC2 for containers, S3 for images) or GCP (Cloud SQL, Cloud Run/GKE, Cloud Storage) or Azure.
+            Web Server/Reverse Proxy (if needed): Nginx
+
+    CI/CD Pipeline (Highly Recommended for Resume):
+        Action: Set up a pipeline that automatically runs tests, builds Docker images, and deploys to your cloud environment whenever code is pushed to the main branch.
+        Tools: GitHub Actions or GitLab CI
+
+    Enhancements (Optional):
+        Action: Implement features like: Real Payment Gateway Integration (Stripe/PayPal), Product Search (basic DB search or dedicated engine), Product Reviews & Ratings, Email Notifications (order confirmation), Image Uploads (to S3/Cloud Storage), Caching (Redis), basic analytics.
+        Tools: Stripe API/PayPal API, Nodemailer, AWS SDK/Google Cloud Client Libraries, Redis.

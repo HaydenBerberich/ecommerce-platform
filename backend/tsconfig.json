@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2016", // Or newer like ES2020. Target modern Node.js versions.
+    "module": "CommonJS", // Standard module system for Node.js/Express
+    "outDir": "./dist", // Where compiled JavaScript will be placed
+    "rootDir": "./src", // Where your TypeScript source code lives
+    "strict": true, // Enable all strict type-checking options (recommended)
+    "esModuleInterop": true, // Allows default imports from CommonJS modules
+    "skipLibCheck": true, // Skip type checking of declaration files (speeds up compilation)
+    "forceConsistentCasingInFileNames": true // Prevent issues on case-sensitive file systems
+    // "moduleResolution": "node" // Usually the default, ensures Node-style module resolution
+  },
+  "include": ["src/**/*"], // Only compile files within the src directory
+  "exclude": ["node_modules"] // Exclude node_modules
+}
