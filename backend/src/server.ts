@@ -1,12 +1,13 @@
 // src/server.ts
-import express, { Request, Response, Application } from 'express';
-import categoryRoutes from './routes/category.routes'; // Import category router
-import productRoutes from './routes/product.routes';   // Import product router
+import express, { Request, Response, Application, NextFunction } from 'express'; // Add NextFunction
+import categoryRoutes from './routes/category.routes';
+import productRoutes from './routes/product.routes';
+import authRoutes from './routes/auth.routes'; // <-- Import Auth Routes
 
 const app: Application = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(express.json()); // Middleware to parse JSON bodies
+app.use(express.json());
 
 // Basic route (optional)
 app.get('/', (req: Request, res: Response) => {
@@ -14,16 +15,15 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // ---> Mount API Routers <---
-app.use('/api/categories', categoryRoutes); // All category routes will be prefixed with /api/categories
-app.use('/api/products', productRoutes);   // All product routes will be prefixed with /api/products
+app.use('/api/auth', authRoutes);         // Mount Auth routes *before* protected routes
+app.use('/api/categories', categoryRoutes);
+app.use('/api/products', productRoutes);
 
-// Basic Error Handling Middleware (Optional but Recommended)
-// Add this *after* your routes
-app.use((err: Error, req: Request, res: Response, next: Function) => {
+// Basic Error Handling Middleware
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => { // Added NextFunction type
     console.error(err.stack);
     res.status(500).send('Something broke!');
 });
-
 
 // Start the server
 app.listen(PORT, () => {
